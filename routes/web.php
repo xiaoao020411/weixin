@@ -14,3 +14,5 @@
 Route::get('/', function () {
     echo phpinfo();
 });
+
+Route::get('/wx','Index\WxController@Token');
