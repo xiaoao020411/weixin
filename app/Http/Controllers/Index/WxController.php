@@ -9,7 +9,7 @@ class WxController extends Controller
 {
     public function Token(){
         $echostr = request()->get('echostr','');
-        if($this->checkSignature && !empty($echostr)){
+        if($this->checkSignature() && !empty($echostr)){
             echo $echostr;
         }
     }
