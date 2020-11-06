@@ -16,9 +16,9 @@ class WxController extends Controller
     }
     private function checkSignature()
     {
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
+        $signature = request()->get("signature");
+        $timestamp = request()->get("timestamp");
+        $nonce = request()->get("nonce");
         
         $token = "Token";
         $tmpArr = array($token, $timestamp, $nonce);
