@@ -44,6 +44,7 @@ class WxController extends Controller
         $response = file_get_contents($url);
         
         $data = json_decode($response,true);
+        dd($data);
         $token = $data['access_token'];
         $key = 'wx:access_token';
         
@@ -51,8 +52,6 @@ class WxController extends Controller
         Redis::expire($key,3600         );
         echo "access_token:",$token;
         }
-        
 
-        
     }
 
