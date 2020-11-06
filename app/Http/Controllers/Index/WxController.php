@@ -53,23 +53,31 @@ class WxController extends Controller
         echo "access_token:",$token;
         }
 
-
         public function wxEvent()
         {
             $signature = request()->get("signature");
             $timestamp = request()->get("timestamp");
             $nonce = request()->get("nonce");
             
-            $token = "index";
+            $token = "Token";
             $tmpArr = array($token, $timestamp, $nonce);
             sort($tmpArr, SORT_STRING);
             $tmpStr = implode( $tmpArr );
             $tmpStr = sha1( $tmpStr );
             
             if( $tmpStr == $signature ){
-                return true;
+                $xml_data=file_get_contents('php://input');
+                file_put_contents('wx_event.log',$xml_data);
+                $data=simplexml_load_string($xml_data,'SimpleXMLElement',LIBXML_NOCDATA);
+                $xml="<xml>
+                    <ToUserName><![CDATA[toUser]]></ToUserName>
+                    <FromUserName><![CDATA[FromUser]]></FromUserName>
+                    <CreateTime>123456789</CreateTime>
+                    <MsgType><![CDATA[event]]></MsgType>
+                    <Event><![CDATA[subscribe]]></Event>
+                </xml>";
             }else{
-                return false;
+                echo "";
             }
         }
 
