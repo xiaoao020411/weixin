@@ -54,7 +54,7 @@ class WxController extends Controller
         }
 
 
-        private function wxEvent()
+        public function wxEvent()
         {
             $signature = request()->get("signature");
             $timestamp = request()->get("timestamp");
