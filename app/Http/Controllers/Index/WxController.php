@@ -68,8 +68,8 @@ class WxController extends Controller
             if( $tmpStr == $signature ){
                 $xml_data=file_get_contents('php://input');
                 file_put_contents('wx_event.log',$xml_data);
-                echo "";
-                die;
+                $data = simplexml_load_string($xml_data, 'SimpleXMLElement', LIBXML_NOCDATA);
+                dd($data);
             }else{
                 echo "";
             }
