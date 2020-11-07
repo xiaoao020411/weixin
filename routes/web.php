@@ -16,5 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('/wx','Index\WxController@Token');
-Route::any('/wxEvent','Index\WxController@wxEvent');
+Route::any('/wx','Index\WxController@wxEvent');
 Route::get('/wx/token','Index\WxController@getAccessToken');
