@@ -68,14 +68,8 @@ class WxController extends Controller
             if( $tmpStr == $signature ){
                 $xml_data=file_get_contents('php://input');
                 file_put_contents('wx_event.log',$xml_data);
-                $data=simplexml_load_string($xml_data,'SimpleXMLElement',LIBXML_NOCDATA);
-                $xml="<xml>
-                    <ToUserName><![CDATA[toUser]]></ToUserName>
-                    <FromUserName><![CDATA[FromUser]]></FromUserName>
-                    <CreateTime>123456789</CreateTime>
-                    <MsgType><![CDATA[event]]></MsgType>
-                    <Event><![CDATA[subscribe]]></Event>
-                </xml>";
+                echo "";
+                die;
             }else{
                 echo "";
             }
