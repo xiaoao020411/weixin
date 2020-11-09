@@ -80,23 +80,23 @@ class WxController extends Controller
                             $result = $this->infocode($data,$Content);
                             return $result;
                     }
-                        
+                    echo "";
             }else{
                 echo "";
             }
              //被动回复消息
-        if($tmpStr == $signature){
-            $xml_data=file_get_contents('php://input');
-            file_put_contents('wx_event.log ',$xml_data);
-            $data=simplexml_load_string($xml_data);
-            if($data->MsgType=='text'){
-                    $array=['你好呀','祝你今天运气爆棚','斯特姆光线','祝你早日找到你的另一半','嘿嘿嘿','泰罗'];
-                    $Content =$array[array_rand($array)];
-                    $result = $this->infocode($data,$Content);
-                    return $result;
+             if($tmpStr == $signature){
+                $xml_data=file_get_contents('php://input');
+                file_put_contents('wx_event.log ',$xml_data);
+                $data=simplexml_load_string($xml_data);
+                if($data->MsgType=='text'){
+                        $array=['你好呀','祝你今天运气爆棚','斯特姆光线','祝你早日找到你的另一半','嘿嘿嘿','泰罗'];
+                        $Content =$array[array_rand($array)];
+                        $result = $this->infocode($data,$Content);
+                        return $result;
+                }
             }
-        }
-        }
+            }
         
     }
     //封装回复信息
