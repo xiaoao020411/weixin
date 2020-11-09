@@ -85,7 +85,7 @@ class WxController extends Controller
             file_put_contents('wx_event.log',$xml_data);
             $data = simplexml_load_string($xml_data);
             if($data->MsgType=='text'){
-                    $array=['你好呀','祝你今天运气爆棚','斯特姆光线','祝你早日找到你的另一半','嘿嘿嘿','泰罗'];
+                    $array=['你好呀','祝你今天运气爆棚','王慧❤','嘿嘿嘿'];
                     $Content =$array[array_rand($array)];
                     $result = $this->infocode($data,$Content);
                     return $result;
