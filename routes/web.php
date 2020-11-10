@@ -19,7 +19,7 @@ Route::prefix('wx')->group(function(){
     Route::any('/','Index\WxController@wxEvent');
     Route::get('/token','Index\WxController@getAccessToken');
     Route::get('/guzzle2','Index\WxController@guzzle2');
-
+    Route::get('/createMenu','Index\WxController@createMenu');
 });
 
 Route::prefix('test')->group(function(){
