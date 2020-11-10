@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <img src="/static/photo/7665d881963cb580f5850dc09f8cb34.jpg" style="widows: 100px; height:100px;" alt="">
 </body>
 </html>

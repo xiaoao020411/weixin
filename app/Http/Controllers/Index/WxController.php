@@ -141,7 +141,7 @@ class WxController extends Controller
                     "sub_button": [
                         {
                             "type": "view",
-                            "name": "huizi",
+                            "name": "huizi", 
                             "url": "http://www.csazam.top/huizi"
                         },
                         {
@@ -153,7 +153,12 @@ class WxController extends Controller
         }';
         $access_token = $this->getAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token;
-        $res = $this->curl($url,$menu);
+        $client = new Client();
+        $respones = $client->request('post',$url,['verify'=>false,'body'=>$menu]);
+        $data = $respones->getBody();
+        echo $data;
+
+
 
     }
     public function curl($url,$menu){
