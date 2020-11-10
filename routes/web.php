@@ -14,8 +14,9 @@
 Route::get('/', function () {
     echo phpinfo();
 });
+Route::prefix('wx')->group(function(){
+    Route::get('/','Index\WxController@Token');
+    Route::any('/','Index\WxController@wxEvent');
+    Route::get('/token','Index\WxController@getAccessToken');
 
-Route::get('/wx','Index\WxController@Token');
-Route::any('/wx','Index\WxController@wxEvent');
-Route::get('/wx/token','Index\WxController@getAccessToken');
-Route::get('/test','Index\WxController@test');
+});

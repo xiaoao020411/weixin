@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Index;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
-
+use GuzzleHttp\Client;
 class WxController extends Controller
 {
     public function Token(){
@@ -55,6 +55,7 @@ class WxController extends Controller
 
         public function wxEvent()
         {
+            //echo __METHOD__;die;
             $signature = request()->get("signature");
             $timestamp = request()->get("timestamp");
             $nonce = request()->get("nonce");
@@ -96,19 +97,18 @@ class WxController extends Controller
     //封装回复信息
     public function infocode($data,$Content){
         $ToUserName=$data->FromUserName;
-                        $FromUserName=$data->ToUserName;
-                        $CreateTime=time();
-                        $MsgType="text";
-                        
-                        $xml="<xml>
-                                <ToUserName><![CDATA[%s]]></ToUserName>
-                                <FromUserName><![CDATA[%s]]></FromUserName>
-                                <CreateTime>%s</CreateTime>
-                                <MsgType><![CDATA[%s]]></MsgType>
-                                <Event><![CDATA[%s]]></Event>
-                                <Content><![CDATA[".$Content."]]></Content>
-                            </xml>";
-                            echo sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
+        $FromUserName=$data->ToUserName;
+        $CreateTime=time();
+        $MsgType="text";
+            $xml="<xml>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
+                <CreateTime>%s</CreateTime>
+                <MsgType><![CDATA[%s]]></MsgType>
+                <Event><![CDATA[%s]]></Event>
+                <Content><![CDATA[".$Content."]]></Content>
+            </xml>";
+            echo sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
     }
-
+    
 }
