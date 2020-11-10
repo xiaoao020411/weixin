@@ -18,5 +18,13 @@ Route::prefix('wx')->group(function(){
     Route::get('/','Index\WxController@Token');
     Route::any('/','Index\WxController@wxEvent');
     Route::get('/token','Index\WxController@getAccessToken');
+    Route::get('/guzzle2','Index\WxController@guzzle2');
 
 });
+
+Route::prefix('test')->group(function(){
+    Route::get('/guzzle1','Index\TestController@guzzle1');
+    Route::get('/guzzle2','Index\TestController@guzzle2');
+});
+
+Route::get('/huizi','Index\TestController@huizi');

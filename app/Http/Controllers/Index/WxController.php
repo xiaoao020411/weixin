@@ -34,24 +34,24 @@ class WxController extends Controller
     }
     //获取access_token
     public function getAccessToken(){
-        
-        //$token = Redis::get($key);
-        // if($token){
-        //     echo "有缓存";
-        // }else{
-        //     echo "无缓存";
+        $key = 'wx:access_token';
+        $token = Redis::get($key);
+        if($token){
+            echo "有缓存";
+        }else{
+            echo "无缓存";
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC');
         $response = file_get_contents($url);
         
         $data = json_decode($response,true);
-        dd($data);
-        $token = $data['access_token'];
-        $key = 'wx:access_token';
         
+        $token = $data['access_token'];
         Redis::set($key,$token);
         Redis::expire($key,3600);
-        echo "access_token:",$token;
+        
         }
+        return $token;
+    }
 
         public function wxEvent()
         {
@@ -72,7 +72,7 @@ class WxController extends Controller
                 $data = simplexml_load_string($xml_data);
                 if($data->MsgType=='event'){
                     if($data->Event=='subscribe'){
-                            $Content ="欢迎再次关注成功";
+                            $Content ="关注成功";
                             $result = $this->infocode($data,$Content);
                             return $result;
                     }
@@ -110,5 +110,70 @@ class WxController extends Controller
             </xml>";
             echo sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
     }
+    public function guzzle2(){
+        $access_token = $this->getAccessToken();
+        //dd($access_token);
+        $type = 'image';
+        $url = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token='.$access_token.'&type='.$type;
+        $client = new Client();
+        $response = $client->request('POST',$url,[
+                'verify'=>false,
+                'multipart'=>[
+                    [
+                        'name'  =>  'media',
+                        'contents'  =>  fopen('34444.jpg','r')
+                    ],
+                ]
+            ]);
+            $data = $response->getBody();
+            echo $data;
+    }
+    public function createMenu(){
+        $menu = '{
+            "button": [
+                {
+                    "type": "click",
+                    "name": "日常签到",
+                    "key": "V1001_TODAY_MUSIC"
+                },
+                {
+                    "name": "打卡",
+                    "sub_button": [
+                        {
+                            "type": "view",
+                            "name": "huizi",
+                            "url": "http://www.csazam.top/huizi"
+                        },
+                        {
+                            "type": "click",
+                            "name": "查看积分",
+                            "key": "V1001_GOOD"
+                        }]
+                }]
+        }';
+        $access_token = $this->getAccessToken();
+        $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token;
+        $res = $this->curl($url,$menu);
+
+    }
+    public function curl($url,$menu){
+        //1.关闭
+        $ch = curl_init();
+        //2.设置
+        curl_setopt($ch,CURLOPT_URL,$url);//提交地址
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);//返回值
+        curl_setopt($ch,CURLOPT_POST,1);//post提交方式
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$menu);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
+        //curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,1);
+        $output = curl_exec($ch);
+        //4.关闭
+        curl_close($ch);
+//        dump($output);
+        return $output;
+
+    }
+
     
 }

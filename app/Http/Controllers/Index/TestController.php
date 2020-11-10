@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 
 class TestController extends Controller
 {
-    public function guzzle1(){
-        
+    public function huizi(){
+        return view('test.huizi');
     }
 }
