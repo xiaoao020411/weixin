@@ -76,7 +76,13 @@ class WxController extends Controller
                             $result = $this->infocode($data,$Content);
                             return $result;
                     }
-                    
+                    //回复天气
+            $arr=['天气','天气。','天气,'];
+            if($data->Content==$arr[array_rand($arr)]){
+                $Content = $this->weather();
+                $result = $this->infocodl($data,$Content);
+                return $result;
+            }
             }else{
                 echo "";
             }
@@ -132,9 +138,9 @@ class WxController extends Controller
         $menu = '{
             "button": [
                 {
-                    "type": "view",
-                    "name": "天气",
-                    "url": "http://www.csazam.top/wx/weather"
+                    "type": "click",
+                    "name": "打卡",
+                    "url": "V1001_GOOD"
                 },
                 {
                     "name": "打卡",
@@ -159,10 +165,13 @@ class WxController extends Controller
         echo $data;
     }
     public function weather(){
-        $url = 'https://devapi.qweather.com/v7/weather/now?key=8fe30e0a6d5a49928dda4e399d37fd1c&location=101010100&gzip=n';
-        $client = new Client();
-        $res = $client->request('GET',$url,['verify'=>false]);
-        $body = $res->getBody();
-        echo $body;
+        $key = '8fe30e0a6d5a49928dda4e399d37fd1c';
+        $url = 'https://devapi.qweather.com/v7/weather/now?key=&location=101010100&gzip=n';
+        $red = $this->curl($url);
+        $red= json_decode($red,true);
+        // dd($red);
+        $rea = $red['now'];
+        $rea=implode(',',$rea);
+        return $rea;
     }
 }
