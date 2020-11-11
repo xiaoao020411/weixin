@@ -167,9 +167,36 @@ class WxController extends Controller
     public function weather(){
         $key = '8fe30e0a6d5a49928dda4e399d37fd1c';
         $url = 'https://devapi.qweather.com/v7/weather/now?key='.$key.'&location=101010100&gzip=n';
-        $client = new Client();
-        $res = $client->request('POST',$url,['verify'=>false]);
-        $body = $res->getBody();
-        return $body;
+        $red = $this->curl($url);
+        $red = json_decode($red,true);
+        $rea = $red['now'];
+        $rea = implode(',',$rea);
+        return $rea;
     }
+    //调用接口方法
+    public function curl($url,$header="",$content=[]){
+        $ch = curl_init(); //初始化CURL句柄
+        if(substr($url,0,5)=="https"){
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,2);
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true); //字符串类型打印
+        curl_setopt($ch, CURLOPT_URL, $url); //设置请求的URL
+        if(!empty($header)){
+            curl_setopt ($ch, CURLOPT_HTTPHEADER,$header);
+        }
+        if($content){
+            curl_setopt ($ch, CURLOPT_POST,true);
+            curl_setopt ($ch, CURLOPT_POSTFIELDS,$content);
+        }
+        //执行
+        $output = curl_exec($ch);
+        if($error=curl_error($ch)){
+            die($error);
+        }
+        //关闭
+        curl_close($ch);
+        return $output;
+    }
+    
 }
