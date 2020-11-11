@@ -139,16 +139,16 @@ class WxController extends Controller
             "button": [
                 {
                     "type": "view",
-                    "name": "天气",
-                    "url": ""
+                    "name": "商城",
+                    "url": "http://wanghui.csazam.top/"
                 },
                 {
                     "name": "打卡",
                     "sub_button": [
                         {
                             "type": "view",
-                            "name": "百度", 
-                            "url": "http://www.baidu.com"
+                            "name": "天气", 
+                            "url": "http://www.csazam.top/wx/weather"
                         },
                         {
                             "type": "click",
