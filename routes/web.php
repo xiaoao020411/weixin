@@ -20,7 +20,7 @@ Route::prefix('wx')->group(function(){
     Route::get('/token','Index\WxController@getAccessToken');
     Route::get('/guzzle2','Index\WxController@guzzle2');
     Route::get('/menu','Index\WxController@createMenu');
-    Route::post('/weather','Index\WxController@weather');
+    Route::any('/weather','Index\WxController@weather');
     
 });
 
