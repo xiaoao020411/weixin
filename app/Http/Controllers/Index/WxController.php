@@ -138,9 +138,9 @@ class WxController extends Controller
         $menu = '{
             "button": [
                 {
-                    "type": "click",
-                    "name": "打卡",
-                    "url": "V1001_GOOD"
+                    "type": "view",
+                    "name": "天气",
+                    "url": ""
                 },
                 {
                     "name": "打卡",
