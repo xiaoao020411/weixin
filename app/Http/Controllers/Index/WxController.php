@@ -166,12 +166,10 @@ class WxController extends Controller
     }
     public function weather(){
         $key = '8fe30e0a6d5a49928dda4e399d37fd1c';
-        $url = 'https://devapi.qweather.com/v7/weather/now?key=&location=101010100&gzip=n';
-        $red = $this->curl($url);
-        $red= json_decode($red,true);
-        // dd($red);
-        $rea = $red['now'];
-        $rea=implode(',',$rea);
-        return $rea;
+        $url = 'https://devapi.qweather.com/v7/weather/now?key='.$key.'&location=101010100&gzip=n';
+        $client = new Client();
+        $res = $client->request('POST',$url,['verify'=>false]);
+        $body = $res->getBody();
+        return $body;
     }
 }
