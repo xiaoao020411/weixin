@@ -132,9 +132,9 @@ class WxController extends Controller
         $menu = '{
             "button": [
                 {
-                    "type": "click",
-                    "name": "日常签到",
-                    "key": "V1001_TODAY_MUSIC"
+                    "type": "view",
+                    "name": "天气",
+                    "url": "http://www.csazam.top/wx/weather"
                 },
                 {
                     "name": "打卡",
@@ -157,8 +157,12 @@ class WxController extends Controller
         $respones = $client->request('post',$url,['verify'=>false,'body'=>$menu]);
         $data = $respones->getBody();
         echo $data;
-
-
-
+    }
+    public function weather(){
+        $url = 'https://devapi.qweather.com/v7/weather/now?key=8fe30e0a6d5a49928dda4e399d37fd1c&location=101010100&gzip=n';
+        $client = new Client();
+        $res = $client->request('GET',$url,['verify'=>false]);
+        $body = $res->getBody();
+        echo $body;
     }
 }
