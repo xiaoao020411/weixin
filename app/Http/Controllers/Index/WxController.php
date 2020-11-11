@@ -141,8 +141,8 @@ class WxController extends Controller
                     "sub_button": [
                         {
                             "type": "view",
-                            "name": "huizi", 
-                            "url": "http://www.csazam.top/huizi"
+                            "name": "百度", 
+                            "url": "http://www.baidu.com"
                         },
                         {
                             "type": "click",
@@ -161,24 +161,4 @@ class WxController extends Controller
 
 
     }
-    public function curl($url,$menu){
-        //1.关闭
-        $ch = curl_init();
-        //2.设置
-        curl_setopt($ch,CURLOPT_URL,$url);//提交地址
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);//返回值
-        curl_setopt($ch,CURLOPT_POST,1);//post提交方式
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$menu);
-        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
-        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
-        //curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,1);
-        $output = curl_exec($ch);
-        //4.关闭
-        curl_close($ch);
-//        dump($output);
-        return $output;
-
-    }
-
-    
 }
