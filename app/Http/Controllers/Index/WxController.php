@@ -80,13 +80,13 @@ class WxController extends Controller
                             $Content = "欢迎再次关注";
                         }else{
                             $userInfo = $this->getWxUserInfo($openid);
+                            unset($userinfo['remark']);
+                            unset($userinfo['groupid']);
+                            unset($userinfo['tagid_list']);
+                            unset($userinfo['subscribe_scene']);
+                            unset($userinfo['qr_scene']);
+                            unset($userinfo['qr_scene_str']);
                             unset($userInfo['subscribe']);
-                            unset($userInfo['remark']);
-                            unset($userInfo['groupid']);
-                            unset($userInfo['substagid_listcribe']);
-                            unset($userInfo['qr_scene']);
-                            unset($userInfo['qr_scene_str']);
-                            unset($userInfo['tagid_list']);
                             WxModel::insertGetId($userInfo);
                             $Content ="关注成功";
                         }
