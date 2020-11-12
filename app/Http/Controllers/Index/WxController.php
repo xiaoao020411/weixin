@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use GuzzleHttp\Client;
-use App\WxModel;
+use App\Model\WxModel;
 class WxController extends Controller
 {
     public function Token(){
