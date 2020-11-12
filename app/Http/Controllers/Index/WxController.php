@@ -38,17 +38,15 @@ class WxController extends Controller
         $key = 'wx:access_token';
         $token = Redis::get($key);
         if($token){
-            echo "有缓存";
         }else{
-            echo "无缓存";
-        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC');
-        $response = file_get_contents($url);
-        
-        $data = json_decode($response,true);
-        
-        $token = $data['access_token'];
-        Redis::set($key,$token);
-        Redis::expire($key,3600);
+            $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC');
+            $response = file_get_contents($url);
+            
+            $data = json_decode($response,true);
+            
+            $token = $data['access_token'];
+            Redis::set($key,$token);
+            Redis::expire($key,3600);
         
         }
         return $token;
@@ -79,13 +77,13 @@ class WxController extends Controller
                         if($info){
                             $Content = "欢迎再次关注";
                         }else{
-                            $userInfo = $this->getWxUserInfo($openid);
-                            unset($userinfo['remark']);
-                            unset($userinfo['groupid']);
-                            unset($userinfo['tagid_list']);
-                            unset($userinfo['subscribe_scene']);
-                            unset($userinfo['qr_scene']);
-                            unset($userinfo['qr_scene_str']);
+                            $userInfo = (array)$this->getWxUserInfo($openid);
+                            unset($userInfo['remark']);
+                            unset($userInfo['groupid']);
+                            unset($userInfo['tagid_list']);
+                            unset($userInfo['subscribe_scene']);
+                            unset($userInfo['qr_scene']);
+                            unset($userInfo['qr_scene_str']);
                             unset($userInfo['subscribe']);
                             WxModel::insertGetId($userInfo);
                             $Content ="关注成功";
