@@ -21,7 +21,7 @@ Route::prefix('wx')->group(function(){
     Route::get('/guzzle2','Index\WxController@guzzle2');
     Route::get('/menu','Index\WxController@createMenu');
     Route::any('/weather','Index\WxController@weather');
-    
+    Route::get('/getWx','Index\WxController@getWxUserInfo');
 });
 
 Route::prefix('test')->group(function(){

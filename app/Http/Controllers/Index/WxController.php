@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use GuzzleHttp\Client;
+use App\WxModel;
 class WxController extends Controller
 {
     public function Token(){
@@ -72,17 +73,26 @@ class WxController extends Controller
                 $data = simplexml_load_string($xml_data);
                 if($data->MsgType=='event'){
                     if($data->Event=='subscribe'){
+                        $openid = $data->FromUserName;
+                        $info = WxModel::where(['openid'=>$openid])->first();
+                        if($info){
+                            $Content = "欢迎再次关注";
+                        }else{
+                            $userInfo = $this->getWxUserInfo($openid);
+                            unset($userInfo['subscribe']);
+                            unset($userInfo['remark']);
+                            unset($userInfo['groupid']);
+                            unset($userInfo['substagid_listcribe']);
+                            unset($userInfo['qr_scene']);
+                            unset($userInfo['qr_scene_str']);
+                            unset($userInfo['tagid_list']);
+                            WxModel::insertGetId($userInfo);
                             $Content ="关注成功";
+                        }
+                        
                             $result = $this->infocode($data,$Content);
                             return $result;
                     }
-                    //回复天气
-            $arr=['天气','天气。','天气,'];
-            if($data->Content==$arr[array_rand($arr)]){
-                $Content = $this->weather();
-                $result = $this->infocodl($data,$Content);
-                return $result;
-            }
             }else{
                 echo "";
             }
@@ -134,6 +144,7 @@ class WxController extends Controller
             $data = $response->getBody();
             echo $data;
     }
+    //自定义菜单
     public function createMenu(){
         $menu = '{
             "button": [
@@ -164,6 +175,7 @@ class WxController extends Controller
         $data = $respones->getBody();
         echo $data;
     }
+    //天气接口
     public function weather(){
         $key = '8fe30e0a6d5a49928dda4e399d37fd1c';
         $url = 'https://devapi.qweather.com/v7/weather/now?key='.$key.'&location=101010100&gzip=n';
@@ -198,5 +210,13 @@ class WxController extends Controller
         curl_close($ch);
         return $output;
     }
-    
+    //获取用户基本信息
+    public function getWxUserInfo($openid){
+        $access_token = $this->getAccessToken();
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
+        $client = new Client();
+        $respones = $client->request('get',$url,['verify'=>false]);
+        $data = $respones->getBody();
+        return json_decode($data,true);
+    }
 }
