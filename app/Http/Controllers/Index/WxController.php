@@ -75,6 +75,7 @@ class WxController extends Controller
                     if($data->Event=='subscribe'){
                         $openid = $data->FromUserName;
                         $info = WxModel::where(['openid'=>$openid])->first();
+                        // var_dump($info);die;
                         if($info){
                             $Content = "欢迎再次关注";
                         }else{
