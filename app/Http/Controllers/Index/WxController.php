@@ -212,12 +212,11 @@ class WxController extends Controller
         return $output;
     }
     //获取用户基本信息
-    private function getWxUserInfo($openid){
+    public function getWxUserInfo($openid){
         $access_token = $this->getAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         $client = new Client();
-        $respones = $client->request('get',$url,['verify'=>false]);
-        $data = $respones->getBody();
-        return json_decode($data,true);
+        $respones = $client->request('GET',$url,['verify'=>false]);
+        return json_decode($respones->getBody(),true);
     }
 }
