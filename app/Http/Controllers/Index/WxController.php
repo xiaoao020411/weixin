@@ -95,7 +95,7 @@ class WxController extends Controller
                     if($data->Envent=='CLICK'){
                         if($data->Eventkey=='weather'){
                             $Content = $this->weather();
-                            $this->infocode($data,$Content);
+                            return $this->infocode($data,$Content);
                         }
                     }
             }else{
