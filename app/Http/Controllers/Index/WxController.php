@@ -75,9 +75,9 @@ class WxController extends Controller
                         $info = WxModel::where(['openid'=>$openid])->first();
                         // var_dump($info);die;
                         if($info){
-                            $Content = "欢迎再次关注";
+                            $Content = "欢迎再次关注 现在时间是：".date('Y-m-d H:i:s');
                         }else{
-                            $userInfo = (array)$this->getWxUserInfo($openid);
+                            $userInfo = $this->getWxUserInfo($openid);
                             unset($userInfo['remark']);
                             unset($userInfo['groupid']);
                             unset($userInfo['tagid_list']);
@@ -86,7 +86,7 @@ class WxController extends Controller
                             unset($userInfo['qr_scene_str']);
                             unset($userInfo['subscribe']);
                             WxModel::insertGetId($userInfo);
-                            $Content ="关注成功";
+                            $Content ="关注成功 现在时间是：".date('Y-m-d H:i:s');
                         }
                         
                             $result = $this->infocode($data,$Content);
@@ -148,23 +148,37 @@ class WxController extends Controller
         $menu = '{
             "button": [
                 {
+                    "name": "发图", 
+                    "sub_button": [
+                        {
+                            "type": "pic_sysphoto", 
+                            "name": "系统拍照发图", 
+                            "key": "rselfmenu_1_0", 
+                           "sub_button": [ ]
+                         }, 
+                        {
+                            "type": "pic_photo_or_album", 
+                            "name": "拍照或者相册发图", 
+                            "key": "rselfmenu_1_1", 
+                            "sub_button": [ ]
+                        }, 
+                        {
+                            "type": "pic_weixin", 
+                            "name": "微信相册发图", 
+                            "key": "rselfmenu_1_2", 
+                            "sub_button": [ ]
+                        }
+                    ]
+                },
+                {
                     "type": "view",
                     "name": "商城",
                     "url": "http://wanghui.csazam.top/"
                 },
                 {
-                    "name": "打卡",
-                    "sub_button": [
-                        {
-                            "type": "view",
-                            "name": "天气", 
-                            "url": "http://www.csazam.top/wx/weather"
-                        },
-                        {
-                            "type": "click",
-                            "name": "查看积分",
-                            "key": "V1001_GOOD"
-                        }]
+                    "type": "click",
+                    "name": "天气",
+                    "key": "WEATHER"
                 }]
         }';
         $access_token = $this->getAccessToken();
