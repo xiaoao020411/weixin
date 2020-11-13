@@ -88,9 +88,15 @@ class WxController extends Controller
                             WxModel::insertGetId($userInfo);
                             $Content ="关注成功 现在时间是：".date('Y-m-d H:i:s');
                         }
-                        
                             $result = $this->infocode($data,$Content);
                             return $result;
+                    }
+                    $this->createMenu();
+                    if($data->Envent=='CLICK'){
+                        if($data->Eventkey=='weather'){
+                            $Content = $this->weather();
+                            $this->infocode($data,$Content);
+                        }
                     }
             }else{
                 echo "";
@@ -171,14 +177,25 @@ class WxController extends Controller
                     ]
                 },
                 {
-                    "type": "view",
-                    "name": "商城",
-                    "url": "http://wanghui.csazam.top/"
+                    "name":"商城",
+                    "sub_button": [
+                        {
+                            "type": "view",
+                            "name": "商城",
+                            "url": "http://wanghui.csazam.top/"
+                        },
+                        {
+                            "type": "click",
+                            "name": "每日推荐",
+                            "key": "WE"
+                        }
+                    ]
+                    
                 },
                 {
                     "type": "click",
                     "name": "天气",
-                    "key": "WEATHER"
+                    "key": "weather"
                 }]
         }';
         $access_token = $this->getAccessToken();
@@ -190,13 +207,15 @@ class WxController extends Controller
     }
     //天气接口
     public function weather(){
-        $key = '8fe30e0a6d5a49928dda4e399d37fd1c';
-        $url = 'https://devapi.qweather.com/v7/weather/now?key='.$key.'&location=101010100&gzip=n';
+        $url ='http://api.k780.com/?app=weather.realtime&weaid=1&ag=today,futureDay,lifeIndex,futureHour&appkey=53296&sign=8a16a77a58bc523e3f63a65d696a3fef&format=json';
         $red = $this->curl($url);
         $red = json_decode($red,true);
-        $rea = $red['now'];
-        $rea = implode(',',$rea);
-        return $rea;
+        if($red['success']){
+            $Content= "";
+            $v=$red['result']['realTime'];
+            $Content.="日期".$v['week']."当前温度".$v['wtTemp']."%  天气".$v['wtNm']."风向".$v['wtWindNm'];
+        }
+        return $Content;
     }
     //调用接口方法
     public function curl($url,$header="",$content=[]){
