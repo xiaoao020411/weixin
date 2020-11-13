@@ -69,6 +69,8 @@ class WxController extends Controller
                 $xml_data=file_get_contents('php://input');
                 file_put_contents('wx_event.log',$xml_data);
                 $data = simplexml_load_string($xml_data);
+                $ToUserName=$data->FromUserName;
+                $FromUserName=$data->ToUserName;
                 if($data->MsgType=='event'){
                     if($data->Event=='subscribe'){
                         $openid = $data->FromUserName;
@@ -88,14 +90,14 @@ class WxController extends Controller
                             WxModel::insertGetId($userInfo);
                             $Content ="关注成功 现在时间是：".date('Y-m-d H:i:s');
                         }
-                            $result = $this->infocode($data,$Content);
+                            $result = $this->infocode($ToUserName,$FromUserName,$Content);
                             return $result;
                     }
                     $this->createMenu();
                     if($data->Event=='CLICK'){
                         if($data->EventKey=='weather'){
                             $Content = $this->weather();
-                            $weather = $this->infocode($data,$Content);
+                            $weather = $this->infocode($ToUserName,$FromUserName,$Content);
                             return $weather;
                         }
                     }
@@ -110,16 +112,14 @@ class WxController extends Controller
             if($data->MsgType=='text'){
                     $array=['你好呀','祝你今天运气爆棚','王慧❤','嘿嘿嘿'];
                     $Content =$array[array_rand($array)];
-                    $result = $this->infocode($data,$Content);
+                    $result = $this->infocode($ToUserName,$FromUserName,$Content);
                     return $result;
             }
         }
         }
     }
     //封装回复信息
-    public function infocode($data,$Content){
-        $ToUserName=$data->FromUserName;
-        $FromUserName=$data->ToUserName;
+    public function infocode($ToUserName,$FromUserName,$Content){
         $CreateTime=time();
         $MsgType="text";
             $xml="<xml>
@@ -130,7 +130,8 @@ class WxController extends Controller
                 <Event><![CDATA[%s]]></Event>
                 <Content><![CDATA[".$Content."]]></Content>
             </xml>";
-            return sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
+            $info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
+            return $info;
     }
     public function guzzle2(){
         $access_token = $this->getAccessToken();
