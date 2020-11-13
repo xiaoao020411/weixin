@@ -130,7 +130,7 @@ class WxController extends Controller
                 <Event><![CDATA[%s]]></Event>
                 <Content><![CDATA[".$Content."]]></Content>
             </xml>";
-            echo sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
+            return sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
     }
     public function guzzle2(){
         $access_token = $this->getAccessToken();
