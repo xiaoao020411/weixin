@@ -93,7 +93,7 @@ class WxController extends Controller
                     }
                     $this->createMenu();
                     if($data->Event=='CLICK'){
-                        if($data->Eventkey=='weather'){
+                        if($data->EventKey=='weather'){
                             $Content = $this->weather();
                             $weather = $this->infocode($data,$Content);
                             return $weather;
