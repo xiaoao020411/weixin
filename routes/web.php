@@ -22,6 +22,10 @@ Route::prefix('wx')->group(function(){
     Route::get('/menu','Index\WxController@createMenu');
     Route::any('/weather','Index\WxController@weather');
     Route::get('/getWx','Index\WxController@getWxUserInfo');
+    Route::get('/test','Index\XcxController@test');
+    Route::get('/login','Index\XcxController@login');
+    Route::get('/goods','Index\XcxController@goods');
+    Route::get('/list','Index\XcxController@list');
 });
 
 Route::prefix('test')->group(function(){
@@ -30,3 +34,4 @@ Route::prefix('test')->group(function(){
 });
 
 Route::get('/huizi','Index\TestController@huizi');
+Route::get('/home','Index\XcxController@home');

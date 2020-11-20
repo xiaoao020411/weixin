@@ -211,6 +211,7 @@ class WxController extends Controller
         $url ='http://api.k780.com/?app=weather.realtime&weaid=1&ag=today,futureDay,lifeIndex,futureHour&appkey=53296&sign=8a16a77a58bc523e3f63a65d696a3fef&format=json';
         $red = $this->curl($url);
         $red = json_decode($red,true);
+        dd($red);
         if($red['success']){
             $Content= "";
             $v=$red['result']['realTime'];
@@ -251,4 +252,6 @@ class WxController extends Controller
         $respones = $client->request('GET',$url,['verify'=>false]);
         return json_decode($respones->getBody(),true);
     }
+
+    
 }
