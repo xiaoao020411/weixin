@@ -58,4 +58,39 @@ class XcxController extends Controller
     public function home(){
         return view('xcx.home');
     }
+    public function xcxlogin(){
+        $code = request()->get('code');
+        // echo $code;
+        //使用code
+        $userinfo =json_decode(file_get_contents("php://input"),true);
+        $url = 'https://api.weixin.qq.com/sns/jscode2session?appid='.env('WX_XCX_APPID').'&secret='.env('WX_XCX_APPSEC').'&js_code='.$code.'&grant_type=authorization_code';
+        $data = json_decode(file_get_contents($url),true);
+        if(isset($data['errcode'])){
+            $response = [
+                'error' =>50001,
+                'msg' =>'登入失败',
+            ];
+        }else{
+            $openid = $data['openid'];
+            $u = DB::table('wxuser')->where(['openid'=>$openid])->first();
+            if($u){
+
+            }else{
+                $u_info = [
+                    'openid' => $openid,
+                    'nickname' => $userinfo['u']['nickName'],
+                    'sex' => $userinfo['u']['gender'],
+                    'language' => $userinfo['u']['language'],
+                    'city' => $userinfo['u']['city'],
+                    'province' => $userinfo['u']['province'],
+                    'country' => $userinfo['u']['country'],
+                    'headimgurl' => $userinfo['u']['avatarUrl'],
+                    'subscribe_time' => time(),
+                    'type' =>3
+                ]; 
+            }
+            DB::table('wxuser')->insertGetId($u_info);
+        }
+
+    }
 }
