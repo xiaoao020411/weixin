@@ -93,4 +93,11 @@ class XcxController extends Controller
         }
 
     }
+    public function addcart(){
+        echo '<pre>';print_r($_POST);echo '</pre>';
+        echo '<pre>';print_r($_GET);echo '</pre>';
+    }
+    public function userlogin(){
+        
+    }
 }

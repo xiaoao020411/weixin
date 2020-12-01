@@ -27,6 +27,8 @@ Route::prefix('wx')->group(function(){
     Route::get('/goods','Index\XcxController@goods');
     Route::get('/list','Index\XcxController@list');
     Route::any('/xcxlogin','Index\XcxController@xcxlogin');
+    Route::any('/addcart','Index\XcxController@addcart');
+    Route::any('/user-login','Index\XcxController@userlogin');
 });
 
 Route::prefix('test')->group(function(){
